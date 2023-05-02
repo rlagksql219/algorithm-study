@@ -43,7 +43,7 @@ int main() {
 			dq.pop_front();
 		}
 	}
-
+	
 	cout << ans;
 
 	return 0;
