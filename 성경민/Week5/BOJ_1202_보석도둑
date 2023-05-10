@@ -1,0 +1,67 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    
+    static int N, K;
+    static Integer[] bag;
+    static gem[] gems;
+    
+    static class gem {
+        int M, V;
+        
+        gem(int M, int V){
+            this.M = M;
+            this.V = V;
+        }
+    }
+    
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        
+        N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+        
+        gems = new gem[N];
+        bag = new Integer[K];
+        
+        for(int i=0; i<N; i++){
+            st = new StringTokenizer(br.readLine());
+            int M = Integer.parseInt(st.nextToken());
+            int V = Integer.parseInt(st.nextToken());
+            
+            gems[i] = new gem(M, V);
+        }
+        
+        Arrays.sort(gems, new Comparator<gem>(){
+            @Override
+            public int compare(gem o1, gem o2){
+                return o1.M - o2.M;
+            }
+        });
+        
+        for(int i=0; i<K; i++){
+            st = new StringTokenizer(br.readLine());
+            bag[i] = Integer.parseInt(st.nextToken());
+        }
+        
+        Arrays.sort(bag);
+        
+        long answer =0;
+        
+        PriorityQueue<gem> q = new PriorityQueue<>((o1, o2) ->o2.V - o1.V);
+        int gemIndex=0;
+        for(int i=0; i<K; i++){
+            while(gemIndex < N && gems[gemIndex].M <= bag[i]){
+                q.add(gems[gemIndex++]);
+            }
+            if(!q.isEmpty()){
+                answer += q.poll().V;
+            }
+        }
+        System.out.print(answer);
+        br.close();
+    }
+}
